@@ -9,6 +9,10 @@
         {
             "name": "PayPal",
             "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
+        },
+        {
+            "name": "Bennet Gallein",
+            "homepage": "https://bennetgallein.de"
         }
     ],
     "require": {
