@@ -9,6 +9,15 @@ use PayPal\Validation\ArgumentValidator;
 
 class Plans extends PayPalResourceModel {
 
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
     public function getProductId() {
         return $this->product_id;
     }
