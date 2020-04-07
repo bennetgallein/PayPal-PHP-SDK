@@ -204,7 +204,7 @@ class Subscription extends PayPalResourceModel {
     }
  
     public function getApprovalLink() {
-        return $this->getLink(PayPalConstants::APPROVAL_URL);
+        return $this->getLink('approve');
     }
 
     public function create($apiContext = null, $restCall = null) {
