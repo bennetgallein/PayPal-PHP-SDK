@@ -207,6 +207,21 @@ class Subscription extends PayPalResourceModel {
         return $this->getLink('approve');
     }
 
+    public function getApplicationContext() {
+        return $this->application_context;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param PayPal\Api\Plans\ApplicationContext $application_context
+     * @return void
+     */
+    public function setApplicationContext($application_context) {
+        $this->application_context = $application_context;
+        return $this;
+    }
+
     public function create($apiContext = null, $restCall = null) {
         $payLoad = $this->toJSON();
         $json = self::executeCall(
