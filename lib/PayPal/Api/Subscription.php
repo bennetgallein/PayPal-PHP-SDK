@@ -3,9 +3,6 @@ namespace PayPal\Api;
 
 use PayPal\Common\PayPalResourceModel;
 use PayPal\Core\PayPalConstants;
-use PayPal\Rest\ApiContext;
-use PayPal\Transport\PayPalRestCall;
-use PayPal\Validation\ArgumentValidator;
 
 class Subscription extends PayPalResourceModel {
 
@@ -206,6 +203,10 @@ class Subscription extends PayPalResourceModel {
         return $this;
     }
  
+    public function getApprovalLink() {
+        return $this->getLink(PayPalConstants::APPROVAL_URL);
+    }
+
     public function create($apiContext = null, $restCall = null) {
         $payLoad = $this->toJSON();
         $json = self::executeCall(
