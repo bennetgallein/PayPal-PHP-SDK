@@ -118,6 +118,11 @@ class Subscription extends PayPalResourceModel {
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \PayPal\Api\Plans\BillingInfo
+     */
     public function getBillingInfo() {
         return $this->billing_info;
     }
