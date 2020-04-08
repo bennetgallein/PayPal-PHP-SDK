@@ -8,7 +8,7 @@ class BillingInfo extends PayPalModel {
     /**
      * Undocumented function
      *
-     * @return \PayPal\Api\Plans\FixedPrice
+     * @return PayPal\Api\Plans\FixedPrice
      */
     public function getOutstandingBalance() {
         return $this->outstanding_balance;
@@ -17,7 +17,7 @@ class BillingInfo extends PayPalModel {
     /**
      * Undocumented function
      *
-     * @param \PayPal\Api\Plans\FixedPrice $outstanding_balance
+     * @param PayPal\Api\Plans\FixedPrice $outstanding_balance
      * @return void
      */
     public function setOutstandingBalance($outstanding_balance) {

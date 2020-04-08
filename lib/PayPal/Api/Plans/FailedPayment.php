@@ -8,7 +8,7 @@ class FailedPayment extends PayPalModel {
     /**
      * Undocumented function
      *
-     * @return \PayPal\Api\Plans\FixedPrice;
+     * @return PayPal\Api\Plans\FixedPrice;
      */
     public function getAmount() {
         return $this->amount;
@@ -17,7 +17,7 @@ class FailedPayment extends PayPalModel {
     /**
      * Undocumented function
      *
-     * @param \PayPal\Api\Plans\FixedPrice $amount
+     * @param PayPal\Api\Plans\FixedPrice $amount
      * @return void
      */
     public function setAmount($amount) {
