@@ -36,7 +36,7 @@ class Subscription extends PayPalResourceModel {
     /**
      * Undocumented function
      *
-     * @return \PayPal\Api\Plans\FixedPrice
+     * @return PayPal\Api\Plans\FixedPrice
      */
     public function getShippingAmount() {
         return $this->shipping_amount;
@@ -45,7 +45,7 @@ class Subscription extends PayPalResourceModel {
     /**
      * Undocumented function
      *
-     * @param \PayPal\Api\Plans\FixedPrice $shipping_amount
+     * @param PayPal\Api\Plans\FixedPrice $shipping_amount
      * @return void
      */
     public function setShippingAmount($shipping_amount) {
@@ -56,7 +56,7 @@ class Subscription extends PayPalResourceModel {
     /**
      * Undocumented function
      *
-     * @return \PayPal\Api\PayerInfo
+     * @return PayPal\Api\PayerInfo
      */
     public function getSubscriber() {
         return $this->subscriber;
@@ -65,7 +65,7 @@ class Subscription extends PayPalResourceModel {
     /**
      * Undocumented function
      *
-     * @param \PayPal\Api\PayerInfo $subscriber
+     * @param PayPal\Api\PayerInfo $subscriber
      * @return void
      */
     public function setSubscriber($subscriber) {
@@ -121,7 +121,7 @@ class Subscription extends PayPalResourceModel {
     /**
      * Undocumented function
      *
-     * @return \PayPal\Api\Plans\BillingInfo
+     * @return PayPal\Api\Plans\BillingInfo
      */
     public function getBillingInfo() {
         return $this->billing_info;
