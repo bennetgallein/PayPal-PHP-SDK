@@ -3,7 +3,7 @@ namespace PayPal\Api\Plans;
 
 use PayPal\Common\PayPalModel;
 
-class CycleExectution extends PayPalModel {
+class CycleExecution extends PayPalModel {
 
     public function getTenureType() {
         return $this->tenure_type;
