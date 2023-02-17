@@ -7,27 +7,23 @@ use PHPUnit\Framework\TestCase;
  * Test class for ApiContextTest.
  *
  */
-class ApiContextTest extends TestCase
-{
+class ApiContextTest extends TestCase {
 
     /**
      * @var ApiContext
      */
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $this->apiContext = new ApiContext();
     }
 
-    public function testGetRequestId()
-    {
+    public function testGetRequestId() {
         $requestId = $this->apiContext->getRequestId();
         $this->assertNull($requestId);
     }
 
-    public function testSetRequestId()
-    {
+    public function testSetRequestId() {
         $this->assertNull($this->apiContext->getRequestId());
 
         $expectedRequestId = 'random-value';
@@ -36,8 +32,7 @@ class ApiContextTest extends TestCase
         $this->assertEquals($expectedRequestId, $requestId);
     }
 
-    public function testResetRequestId()
-    {
+    public function testResetRequestId() {
         $this->assertNull($this->apiContext->getRequestId());
 
         $requestId = $this->apiContext->resetRequestId();

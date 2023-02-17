@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class BillingPlansFunctionalTest extends TestCase
-{
+class BillingPlansFunctionalTest extends TestCase {
 
     public static $obj;
 
@@ -28,15 +27,13 @@ class BillingPlansFunctionalTest extends TestCase
 
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $this->setupTest($className, $testName);
     }
 
-    public function setupTest($className, $testName)
-    {
+    public function setupTest($className, $testName) {
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
         $this->operation = json_decode($operationString, true);
         $this->response = true;
@@ -52,8 +49,7 @@ class BillingPlansFunctionalTest extends TestCase
      *
      * @return Plan
      */
-    public static function getPlan()
-    {
+    public static function getPlan() {
         if (!self::$obj) {
             $test = new self();
             // Creates a Plan
@@ -70,13 +66,11 @@ class BillingPlansFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new Plan($request);
         $result = $obj->create($this->apiContext, $this->mockPayPalRestCall);
@@ -85,8 +79,7 @@ class BillingPlansFunctionalTest extends TestCase
         return $result;
     }
 
-    public function testCreateWithNOChargeModel()
-    {
+    public function testCreateWithNOChargeModel() {
         $request = $this->operation['request']['body'];
         $obj = new Plan($request);
         $result = $obj->create($this->apiContext, $this->mockPayPalRestCall);
@@ -99,8 +92,7 @@ class BillingPlansFunctionalTest extends TestCase
      * @param $plan Plan
      * @return Plan
      */
-    public function testGet($plan)
-    {
+    public function testGet($plan) {
         $result = Plan::get($plan->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($plan->getId(), $result->getId());
@@ -112,8 +104,7 @@ class BillingPlansFunctionalTest extends TestCase
      * @depends testGet
      * @param $plan Plan
      */
-    public function testGetList($plan)
-    {
+    public function testGetList($plan) {
         $result = Plan::all(array('page_size' => '20', 'total_required' => 'yes'), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $totalPages = $result->getTotalPages();
@@ -139,8 +130,7 @@ class BillingPlansFunctionalTest extends TestCase
      * @depends testGet
      * @param $plan Plan
      */
-    public function testUpdateChangingMerchantPreferences($plan)
-    {
+    public function testUpdateChangingMerchantPreferences($plan) {
         /** @var Patch[] $request */
         $request = $this->operation['request']['body'][0];
         $patch = new Patch();
@@ -159,8 +149,7 @@ class BillingPlansFunctionalTest extends TestCase
      * @depends testGet
      * @param $plan Plan
      */
-    public function testUpdateChangingPD($plan)
-    {
+    public function testUpdateChangingPD($plan) {
         /** @var Patch[] $request */
         $request = $this->operation['request']['body'][0];
         $patch = new Patch();
@@ -181,8 +170,7 @@ class BillingPlansFunctionalTest extends TestCase
      * @param $plan Plan
      * @return Plan
      */
-    public function testUpdateChangingState($plan)
-    {
+    public function testUpdateChangingState($plan) {
         /** @var Patch[] $request */
         $request = $this->operation['request']['body'][0];
         $patch = new Patch();

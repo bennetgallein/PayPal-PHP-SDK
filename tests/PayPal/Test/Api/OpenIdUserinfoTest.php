@@ -9,32 +9,28 @@ use PHPUnit\Framework\TestCase;
  * Test class for OpenIdUserinfo.
  *
  */
-class OpenIdUserinfoTest extends TestCase
-{
+class OpenIdUserinfoTest extends TestCase {
 
 
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
-    {
+    protected function setUp(): void {
     }
 
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
-    {
+    protected function tearDown(): void {
     }
 
 
     /**
      * @test
      */
-    public function testSerializationDeserialization()
-    {
+    public function testSerializationDeserialization() {
         $user = new OpenIdUserinfo();
         $user->setAccountType("PERSONAL")->setAgeRange("20-30")->setBirthday("1970-01-01")
             ->setEmail("me@email.com")->setEmailVerified(true)
@@ -56,8 +52,7 @@ class OpenIdUserinfoTest extends TestCase
     /**
      * @test
      */
-    public function testInvalidParamUserInfoCall()
-    {
+    public function testInvalidParamUserInfoCall() {
         $this->setExpectedException('PayPal\Exception\PayPalConnectionException');
         OpenIdUserinfo::getUserinfo(array('access_token' => 'accessToken'));
     }

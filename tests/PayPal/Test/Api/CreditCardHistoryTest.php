@@ -1,12 +1,12 @@
 <?php
+
 namespace PayPal\Test\Api;
 
 use PayPal\Api\CreditCard;
 use PayPal\Api\CreditCardHistory;
 use PHPUnit\Framework\TestCase;
 
-class CreditCardHistoryTest extends TestCase
-{
+class CreditCardHistoryTest extends TestCase {
 
     private $cards;
 
@@ -22,8 +22,7 @@ class CreditCardHistoryTest extends TestCase
     public static $firstName = "V";
     public static $lastName = "C";
 
-    public static function createCreditCard()
-    {
+    public static function createCreditCard() {
         $card = new CreditCard();
         $card->setType(self::$cardType);
         $card->setNumber(self::$cardNumber);
@@ -38,8 +37,7 @@ class CreditCardHistoryTest extends TestCase
         return $card;
     }
 
-    public function setup()
-    {
+    public function setUp(): void {
         $card = self::createCreditCard();
         $card->setBillingAddress(AddressTest::getObject());
         $card->setLinks(array(LinksTest::getObject()));
@@ -49,8 +47,7 @@ class CreditCardHistoryTest extends TestCase
         $this->cards['partial'] = $card;
     }
 
-    public function testGetterSetters()
-    {
+    public function testGetterSetters() {
         $cardHistory = new CreditCardHistory();
         $cardHistory->setCreditCards(array($this->cards['partial'], $this->cards['full']));
         $cardHistory->setCount(2);
@@ -59,8 +56,7 @@ class CreditCardHistoryTest extends TestCase
     }
 
 
-    public function testSerializationDeserialization()
-    {
+    public function testSerializationDeserialization() {
         $cardHistory = new CreditCardHistory();
         $cardHistory->setCreditCards(array($this->cards['partial'], $this->cards['full']));
         $cardHistory->setCount(2);

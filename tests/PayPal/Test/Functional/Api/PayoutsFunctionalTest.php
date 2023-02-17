@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class PayoutsFunctionalTest extends TestCase
-{
+class PayoutsFunctionalTest extends TestCase {
 
     public $operation;
 
@@ -26,8 +25,7 @@ class PayoutsFunctionalTest extends TestCase
 
     public static $batchId;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
@@ -44,13 +42,11 @@ class PayoutsFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new Payout($request);
         if (Setup::$mode != 'mock') {
@@ -74,8 +70,7 @@ class PayoutsFunctionalTest extends TestCase
      * @param $payoutBatch PayoutBatch
      * @return PayoutBatch
      */
-    public function testGet($payoutBatch)
-    {
+    public function testGet($payoutBatch) {
         $result = Payout::get($payoutBatch->getBatchHeader()->getPayoutBatchId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertNotNull($result->getBatchHeader()->getBatchStatus());
@@ -88,8 +83,7 @@ class PayoutsFunctionalTest extends TestCase
      * @param $payoutBatch PayoutBatch
      * @return PayoutBatch
      */
-    public function testGetItem($payoutBatch)
-    {
+    public function testGetItem($payoutBatch) {
         $items = $payoutBatch->getItems();
         $item = $items[0];
         $result = PayoutItem::get($item->getPayoutItemId(), $this->apiContext, $this->mockPayPalRestCall);
@@ -105,8 +99,7 @@ class PayoutsFunctionalTest extends TestCase
      * @param $payoutBatch PayoutBatch
      * @return PayoutBatch
      */
-    public function testCancel($payoutBatch)
-    {
+    public function testCancel($payoutBatch) {
         $items = $payoutBatch->getItems();
         $item = $items[0];
         if ($item->getTransactionStatus() != 'UNCLAIMED') {

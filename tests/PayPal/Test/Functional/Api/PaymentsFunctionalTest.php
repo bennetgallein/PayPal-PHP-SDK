@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class PaymentsFunctionalTest extends TestCase
-{
+class PaymentsFunctionalTest extends TestCase {
 
     public $operation;
 
@@ -24,8 +23,7 @@ class PaymentsFunctionalTest extends TestCase
 
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
@@ -41,13 +39,11 @@ class PaymentsFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new Payment($request);
         $result = $obj->create($this->apiContext, $this->mockPayPalRestCall);
@@ -55,8 +51,7 @@ class PaymentsFunctionalTest extends TestCase
         return $result;
     }
 
-    public function testCreateWallet()
-    {
+    public function testCreateWallet() {
         $request = $this->operation['request']['body'];
         $obj = new Payment($request);
         $result = $obj->create($this->apiContext, $this->mockPayPalRestCall);
@@ -69,8 +64,7 @@ class PaymentsFunctionalTest extends TestCase
      * @param $payment Payment
      * @return Payment
      */
-    public function testGet($payment)
-    {
+    public function testGet($payment) {
         $result = Payment::get($payment->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($payment->getId(), $result->getId());
@@ -82,8 +76,7 @@ class PaymentsFunctionalTest extends TestCase
      * @param $payment Payment
      * @return Sale
      */
-    public function testGetSale($payment)
-    {
+    public function testGetSale($payment) {
         $transactions = $payment->getTransactions();
         $transaction = $transactions[0];
         $relatedResources = $transaction->getRelatedResources();
@@ -99,8 +92,7 @@ class PaymentsFunctionalTest extends TestCase
      * @param $sale Sale
      * @return Sale
      */
-    public function testRefundSale($sale)
-    {
+    public function testRefundSale($sale) {
         $refund = new Refund($this->operation['request']['body']);
         $result = $sale->refund($refund, $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
@@ -114,8 +106,7 @@ class PaymentsFunctionalTest extends TestCase
      * @param $payment Payment
      * @return Payment
      */
-    public function testExecute($payment)
-    {
+    public function testExecute($payment) {
         if (Setup::$mode == 'sandbox') {
             $this->markTestSkipped('Not executable on sandbox environment. Needs human interaction');
         }

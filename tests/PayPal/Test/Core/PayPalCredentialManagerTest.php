@@ -1,4 +1,5 @@
 <?php
+
 use PayPal\Core\PayPalCredentialManager;
 use PHPUnit\Framework\TestCase;
 
@@ -7,8 +8,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @runTestsInSeparateProcesses
  */
-class PayPalCredentialManagerTest extends TestCase
-{
+class PayPalCredentialManagerTest extends TestCase {
     /**
      * @var PayPalCredentialManager
      */
@@ -33,8 +33,7 @@ class PayPalCredentialManagerTest extends TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
-    {
+    protected function setUp(): void {
         $this->object = PayPalCredentialManager::getInstance($this->config);
     }
 
@@ -42,15 +41,13 @@ class PayPalCredentialManagerTest extends TestCase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
-    {
+    protected function tearDown(): void {
     }
 
     /**
      * @test
      */
-    public function testGetInstance()
-    {
+    public function testGetInstance() {
         $instance = $this->object->getInstance($this->config);
         $this->assertInstanceOf('PayPal\Core\PayPalCredentialManager', $instance);
     }
@@ -58,8 +55,7 @@ class PayPalCredentialManagerTest extends TestCase
     /**
      * @test
      */
-    public function testGetSpecificCredentialObject()
-    {
+    public function testGetSpecificCredentialObject() {
         $cred = $this->object->getCredentialObject('acct1');
         $this->assertNotNull($cred);
         $this->assertAttributeEquals('client-id', 'clientId', $cred);
@@ -71,8 +67,7 @@ class PayPalCredentialManagerTest extends TestCase
      *
      * @throws \PayPal\Exception\PayPalInvalidCredentialException
      */
-    public function testSetCredentialObject()
-    {
+    public function testSetCredentialObject() {
         $authObject = $this->getMockBuilder('\Paypal\Auth\OAuthTokenCredential')
             ->disableOriginalConstructor()
             ->getMock();
@@ -87,8 +82,7 @@ class PayPalCredentialManagerTest extends TestCase
      *
      * @throws \PayPal\Exception\PayPalInvalidCredentialException
      */
-    public function testSetCredentialObjectWithUserId()
-    {
+    public function testSetCredentialObjectWithUserId() {
         $authObject = $this->getMockBuilder('\Paypal\Auth\OAuthTokenCredential')
             ->disableOriginalConstructor()
             ->getMock();
@@ -102,8 +96,7 @@ class PayPalCredentialManagerTest extends TestCase
      *
      * @throws \PayPal\Exception\PayPalInvalidCredentialException
      */
-    public function testSetCredentialObjectWithoutDefault()
-    {
+    public function testSetCredentialObjectWithoutDefault() {
         $authObject = $this->getMockBuilder('\Paypal\Auth\OAuthTokenCredential')
             ->disableOriginalConstructor()
             ->getMock();
@@ -116,8 +109,7 @@ class PayPalCredentialManagerTest extends TestCase
     /**
      * @test
      */
-    public function testGetInvalidCredentialObject()
-    {
+    public function testGetInvalidCredentialObject() {
         $this->setExpectedException('PayPal\Exception\PayPalInvalidCredentialException');
         $cred = $this->object->getCredentialObject('invalid_biz_api1.gmail.com');
     }
@@ -125,8 +117,7 @@ class PayPalCredentialManagerTest extends TestCase
     /**
      *
      */
-    public function testGetDefaultCredentialObject()
-    {
+    public function testGetDefaultCredentialObject() {
         $cred = $this->object->getCredentialObject();
         $this->assertNotNull($cred);
         $this->assertAttributeEquals('client-id', 'clientId', $cred);
@@ -136,8 +127,7 @@ class PayPalCredentialManagerTest extends TestCase
     /**
      * @test
      */
-    public function testGetRestCredentialObject()
-    {
+    public function testGetRestCredentialObject() {
         $cred = $this->object->getCredentialObject('acct1');
 
         $this->assertNotNull($cred);

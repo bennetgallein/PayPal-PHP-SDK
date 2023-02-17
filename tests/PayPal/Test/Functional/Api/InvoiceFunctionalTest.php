@@ -16,8 +16,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class InvoiceFunctionalTest extends TestCase
-{
+class InvoiceFunctionalTest extends TestCase {
 
     public static $obj;
 
@@ -29,15 +28,13 @@ class InvoiceFunctionalTest extends TestCase
 
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $this->setupTest($className, $testName);
     }
 
-    public function setupTest($className, $testName)
-    {
+    public function setupTest($className, $testName) {
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
         $this->operation = json_decode($operationString, true);
         $this->response = true;
@@ -53,13 +50,11 @@ class InvoiceFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new Invoice($request);
         $result = $obj->create($this->apiContext, $this->mockPayPalRestCall);
@@ -73,8 +68,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testGet($invoice)
-    {
+    public function testGet($invoice) {
         $result = Invoice::get($invoice->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($invoice->getId(), $result->getId());
@@ -86,8 +80,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testSend($invoice)
-    {
+    public function testSend($invoice) {
         $result = $invoice->send($this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         return $invoice;
@@ -98,12 +91,11 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testGetAll($invoice)
-    {
+    public function testGetAll($invoice) {
         $result = Invoice::getAll(array('page_size' => '20', 'total_count_required' => 'true'), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertNotNull($result->getTotalCount());
-        $totalPages = ceil($result->getTotalCount()/20);
+        $totalPages = ceil($result->getTotalCount() / 20);
         $found = false;
         $foundObject = null;
         do {
@@ -128,8 +120,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testUpdate($invoice)
-    {
+    public function testUpdate($invoice) {
         $result = $invoice->update($this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($invoice->getId(), $result->getId());
@@ -140,8 +131,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testSearch($invoice)
-    {
+    public function testSearch($invoice) {
         $request = $this->operation['request']['body'];
         $search = new Search($request);
         $result = Invoice::search($search, $this->apiContext, $this->mockPayPalRestCall);
@@ -154,8 +144,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testRemind($invoice)
-    {
+    public function testRemind($invoice) {
         $request = $this->operation['request']['body'];
         $notification = new Notification($request);
         $result = $invoice->remind($notification, $this->apiContext, $this->mockPayPalRestCall);
@@ -167,8 +156,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testCancel($invoice)
-    {
+    public function testCancel($invoice) {
         $request = $this->operation['request']['body'];
         $notification = new CancelNotification($request);
         $result = $invoice->cancel($notification, $this->apiContext, $this->mockPayPalRestCall);
@@ -180,8 +168,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testQRCode($invoice)
-    {
+    public function testQRCode($invoice) {
         $result = Invoice::qrCode($invoice->getId(), array(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertNotNull($result->getImage());
@@ -192,8 +179,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testRecordPayment($invoice)
-    {
+    public function testRecordPayment($invoice) {
         $this->setupTest($this->getClassName(), 'testCreate');
         $invoice = $this->testCreate($invoice);
         $this->setupTest($this->getClassName(), 'testSend');
@@ -212,8 +198,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testRecordRefund($invoice)
-    {
+    public function testRecordRefund($invoice) {
         $request = $this->operation['request']['body'];
         $refundDetail = new RefundDetail($request);
         $result = $invoice->recordRefund($refundDetail, $this->apiContext, $this->mockPayPalRestCall);
@@ -228,8 +213,7 @@ class InvoiceFunctionalTest extends TestCase
      * @param $invoice Invoice
      * @return Invoice
      */
-    public function testDelete($invoice)
-    {
+    public function testDelete($invoice) {
         $this->setupTest($this->getClassName(), 'testCreate');
         $invoice = $this->testCreate($invoice);
         $this->setupTest($this->getClassName(), 'testDelete');

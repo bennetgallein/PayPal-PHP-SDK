@@ -18,8 +18,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class WebhookFunctionalTest extends TestCase
-{
+class WebhookFunctionalTest extends TestCase {
 
     public $operation;
 
@@ -29,8 +28,7 @@ class WebhookFunctionalTest extends TestCase
 
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
@@ -46,13 +44,11 @@ class WebhookFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new Webhook($request);
         // Adding a random url request to make it unique
@@ -73,8 +69,7 @@ class WebhookFunctionalTest extends TestCase
         return $result;
     }
 
-    public function deleteAll()
-    {
+    public function deleteAll() {
         $result = Webhook::getAll($this->apiContext, $this->mockPayPalRestCall);
         foreach ($result->getWebhooks() as $webhookObject) {
             $webhookObject->delete($this->apiContext, $this->mockPayPalRestCall);
@@ -86,8 +81,7 @@ class WebhookFunctionalTest extends TestCase
      * @param $webhook Webhook
      * @return Webhook
      */
-    public function testGet($webhook)
-    {
+    public function testGet($webhook) {
         $result = Webhook::get($webhook->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($webhook->getId(), $result->getId());
@@ -99,8 +93,7 @@ class WebhookFunctionalTest extends TestCase
      * @param $webhook Webhook
      * @return WebhookEventTypeList
      */
-    public function testGetSubscribedEventTypes($webhook)
-    {
+    public function testGetSubscribedEventTypes($webhook) {
         $result = WebhookEventType::subscribedEventTypes($webhook->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertCount(2, $result->getEventTypes());
@@ -112,8 +105,7 @@ class WebhookFunctionalTest extends TestCase
      * @param $webhook Webhook
      * @return WebhookList
      */
-    public function testGetAll($webhook)
-    {
+    public function testGetAll($webhook) {
         $result = Webhook::getAll($this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $found = false;
@@ -134,8 +126,7 @@ class WebhookFunctionalTest extends TestCase
      * @depends testGet
      * @param $webhook Webhook
      */
-    public function testUpdate($webhook)
-    {
+    public function testUpdate($webhook) {
         $patches = array();
         foreach ($this->operation['request']['body'] as $request) {
             /** @var Patch[] $request */
@@ -144,7 +135,7 @@ class WebhookFunctionalTest extends TestCase
             $patch->setPath($request['path']);
             $patch->setValue($request['value']);
             if ($request['path'] == "/url") {
-                $new_url = $request['value'] . '?rand=' .uniqid();
+                $new_url = $request['value'] . '?rand=' . uniqid();
                 $patch->setValue($new_url);
             }
             $patches[] = $patch;
@@ -169,14 +160,12 @@ class WebhookFunctionalTest extends TestCase
      * @depends testGet
      * @param $webhook Webhook
      */
-    public function testDelete($webhook)
-    {
+    public function testDelete($webhook) {
         $result = $webhook->delete($this->apiContext, $this->mockPayPalRestCall);
         $this->assertTrue($result);
     }
 
-    public function testEventSearch()
-    {
+    public function testEventSearch() {
         $result = WebhookEvent::all(array(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         return $result;

@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package PayPal\Test\Api
  */
-class WebProfileFunctionalTest extends TestCase
-{
+class WebProfileFunctionalTest extends TestCase {
 
     public $operation;
 
@@ -24,8 +23,7 @@ class WebProfileFunctionalTest extends TestCase
 
     public $apiContext;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         $className = $this->getClassName();
         $testName = $this->getName();
         $operationString = file_get_contents(__DIR__ . "/../resources/$className/$testName.json");
@@ -42,13 +40,11 @@ class WebProfileFunctionalTest extends TestCase
      * Returns just the classname of the test you are executing. It removes the namespaces.
      * @return string
      */
-    public function getClassName()
-    {
+    public function getClassName() {
         return join('', array_slice(explode('\\', get_class($this)), -1));
     }
 
-    public function testCreate()
-    {
+    public function testCreate() {
         $request = $this->operation['request']['body'];
         $obj = new WebProfile($request);
         $obj->setName(uniqid());
@@ -62,8 +58,7 @@ class WebProfileFunctionalTest extends TestCase
      * @param $createProfileResponse CreateProfileResponse
      * @return WebProfile
      */
-    public function testGet($createProfileResponse)
-    {
+    public function testGet($createProfileResponse) {
         $result = WebProfile::get($createProfileResponse->getId(), $this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $this->assertEquals($createProfileResponse->getId(), $result->getId());
@@ -79,8 +74,7 @@ class WebProfileFunctionalTest extends TestCase
      * @depends testGet
      * @param $webProfile WebProfile
      */
-    public function testGetList($webProfile)
-    {
+    public function testGetList($webProfile) {
         $result = WebProfile::get_list($this->apiContext, $this->mockPayPalRestCall);
         $this->assertNotNull($result);
         $found = false;
@@ -103,8 +97,7 @@ class WebProfileFunctionalTest extends TestCase
      * @depends testGet
      * @param $webProfile WebProfile
      */
-    public function testUpdate($webProfile)
-    {
+    public function testUpdate($webProfile) {
         $boolValue = $webProfile->getInputFields()->getNoShipping();
         $newValue = ($boolValue + 1) % 2;
         $webProfile->getInputFields()->setNoShipping($newValue);
@@ -117,8 +110,7 @@ class WebProfileFunctionalTest extends TestCase
      * @depends testGet
      * @param $webProfile WebProfile
      */
-    public function testPartialUpdate($webProfile)
-    {
+    public function testPartialUpdate($webProfile) {
         $patches = array();
         $patches[] = new Patch('{
              "op": "add",
@@ -138,8 +130,7 @@ class WebProfileFunctionalTest extends TestCase
      * @depends testGet
      * @param $createProfileResponse CreateProfileResponse
      */
-    public function testDelete($createProfileResponse)
-    {
+    public function testDelete($createProfileResponse) {
         $webProfile = new WebProfile();
         $webProfile->setId($createProfileResponse->getId());
         $result = $webProfile->delete($this->apiContext, $this->mockPayPalRestCall);
