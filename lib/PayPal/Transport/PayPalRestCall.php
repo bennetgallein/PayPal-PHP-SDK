@@ -11,8 +11,7 @@ use PayPal\Rest\ApiContext;
  *
  * @package PayPal\Transport
  */
-class PayPalRestCall
-{
+class PayPalRestCall {
 
 
     /**
@@ -35,14 +34,13 @@ class PayPalRestCall
      *
      * @param ApiContext $apiContext
      */
-    public function __construct(ApiContext $apiContext)
-    {
+    public function __construct(ApiContext $apiContext) {
         $this->apiContext = $apiContext;
-        $this->logger = PayPalLoggingManager::getInstance(__CLASS__);
+        $this->logger     = PayPalLoggingManager::getInstance(__CLASS__);
     }
 
     /**
-     * @param array  $handlers Array of handlers
+     * @param array|null  $handlers Array of handlers
      * @param string $path     Resource path relative to base service endpoint
      * @param string $method   HTTP method - one of GET, POST, PUT, DELETE, PATCH etc
      * @param string $data     Request payload
@@ -50,11 +48,10 @@ class PayPalRestCall
      * @return mixed
      * @throws \PayPal\Exception\PayPalConnectionException
      */
-    public function execute($handlers = array(), $path, $method, $data = '', $headers = array())
-    {
-        $config = $this->apiContext->getConfig();
+    public function execute($handlers, $path, $method, $data = '', $headers = array()) {
+        $config     = $this->apiContext->getConfig();
         $httpConfig = new PayPalHttpConfig(null, $method, $config);
-        $headers = $headers ? $headers : array();
+        $headers    = $headers ? $headers : array();
         $httpConfig->setHeaders($headers +
             array(
                 'Content-Type' => 'application/json'
@@ -67,15 +64,17 @@ class PayPalRestCall
         }
 
         /** @var \Paypal\Handler\IPayPalHandler $handler */
-        foreach ($handlers as $handler) {
-            if (!is_object($handler)) {
-                $fullHandler = "\\" . (string)$handler;
-                $handler = new $fullHandler($this->apiContext);
+        if (is_array($handlers)) {
+            foreach ($handlers as $handler) {
+                if (!is_object($handler)) {
+                    $fullHandler = "\\" . (string) $handler;
+                    $handler     = new $fullHandler($this->apiContext);
+                }
+                $handler->handle($httpConfig, $data, array('path' => $path, 'apiContext' => $this->apiContext));
             }
-            $handler->handle($httpConfig, $data, array('path' => $path, 'apiContext' => $this->apiContext));
         }
         $connection = new PayPalHttpConnection($httpConfig, $config);
-        $response = $connection->execute($data);
+        $response   = $connection->execute($data);
 
         return $response;
     }

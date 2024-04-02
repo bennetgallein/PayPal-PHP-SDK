@@ -133,7 +133,7 @@ class ReflectionUtil
      * @param $match
      * @return string
      */
-    private static function replace_callback($match)
+    public static function replace_callback($match)
     {
         return ucwords($match[2]);
     }
@@ -150,6 +150,6 @@ class ReflectionUtil
     {
         return method_exists($class, "get" . ucfirst($propertyName)) ?
             "get" . ucfirst($propertyName) :
-            "get" . preg_replace_callback("/([_\-\s]?([a-z0-9]+))/", "self::replace_callback", $propertyName);
+            "get" . preg_replace_callback("/([_\-\s]?([a-z0-9]+))/", "replace_callback", $propertyName);
     }
 }

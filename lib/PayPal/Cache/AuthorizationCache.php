@@ -5,8 +5,7 @@ namespace PayPal\Cache;
 use PayPal\Core\PayPalConfigManager;
 use PayPal\Validation\JsonValidator;
 
-abstract class AuthorizationCache
-{
+abstract class AuthorizationCache {
     public static $CACHE_PATH = '/../../../var/auth.cache';
 
     /**
@@ -17,14 +16,13 @@ abstract class AuthorizationCache
      * @param string $clientId
      * @return mixed|null
      */
-    public static function pull($config = null, $clientId = null)
-    {
+    public static function pull($config = null, $clientId = null) {
         // Return if not enabled
         if (!self::isEnabled($config)) {
             return null;
         }
 
-        $tokens = null;
+        $tokens    = null;
         $cachePath = self::cachePath($config);
         if (file_exists($cachePath)) {
             // Read from the file
@@ -53,8 +51,7 @@ abstract class AuthorizationCache
      * @param      $tokenExpiresIn
      * @throws \Exception
      */
-    public static function push($config = null, $clientId, $accessToken, $tokenCreateTime, $tokenExpiresIn)
-    {
+    public static function push($config, $clientId, $accessToken, $tokenCreateTime, $tokenExpiresIn) {
         // Return if not enabled
         if (!self::isEnabled($config)) {
             return;
@@ -72,15 +69,16 @@ abstract class AuthorizationCache
         $tokens = $tokens ? $tokens : array();
         if (is_array($tokens)) {
             $tokens[$clientId] = array(
-                'clientId' => $clientId,
+                'clientId'             => $clientId,
                 'accessTokenEncrypted' => $accessToken,
-                'tokenCreateTime' => $tokenCreateTime,
-                'tokenExpiresIn' => $tokenExpiresIn
+                'tokenCreateTime'      => $tokenCreateTime,
+                'tokenExpiresIn'       => $tokenExpiresIn
             );
         }
         if (!file_put_contents($cachePath, json_encode($tokens))) {
             throw new \Exception("Failed to write cache");
-        };
+        }
+        ;
     }
 
     /**
@@ -89,20 +87,18 @@ abstract class AuthorizationCache
      * @param $config
      * @return bool
      */
-    public static function isEnabled($config)
-    {
+    public static function isEnabled($config) {
         $value = self::getConfigValue('cache.enabled', $config);
         return empty($value) ? false : ((trim($value) == true || trim($value) == 'true'));
     }
-    
+
     /**
      * Returns the cache file path
      *
      * @param $config
      * @return string
      */
-    public static function cachePath($config)
-    {
+    public static function cachePath($config) {
         $cachePath = self::getConfigValue('cache.FileName', $config);
         return empty($cachePath) ? __DIR__ . self::$CACHE_PATH : $cachePath;
     }
@@ -115,8 +111,7 @@ abstract class AuthorizationCache
      * @param $config
      * @return null|string
      */
-    private static function getConfigValue($key, $config)
-    {
+    private static function getConfigValue($key, $config) {
         $config = ($config && is_array($config)) ? $config : PayPalConfigManager::getInstance()->getConfigHashmap();
         return (array_key_exists($key, $config)) ? trim($config[$key]) : null;
     }
